@@ -1,75 +1,94 @@
 # DJS03: React Podcast Landing Page
 
-## Overview
+Hey! This is my project **DJS03**, a React landing page for discovering podcasts. 🎧
 
-In this project, you will build the landing page for a podcast discovery app using **React**. Your goal is to fetch podcast data from an external API and dynamically render a **responsive grid of podcast previews**. This project focuses on **data fetching**, **component structure**, **rendering logic**, and **layout styling**.
-
----
-
-## Core Objectives
-
-- Fetch podcast data from an API: https://podcast-api.netlify.app/ on initial page load.
-- Display a loading indicator while data is being fetched, and handle errors or empty results with a clear user message.
-- Render a responsive **grid layout** of podcast previews using modular, reusable React components.
-- Pass podcast data into components via props and render each podcast card with the following:
-  - Podcast **image**
-  - Podcast **title**
-  - Number of **seasons**
-  - Associated **genre names**
-  - Formatted **last updated** date (e.g., "2 days ago")
-- Apply clean, consistent layout and styling across different screen sizes using CSS Grid or Flexbox.
-- Maintain high-quality, readable code with clear structure and **JSDoc comments** for key functions and components.
+I built this so users can explore podcasts in a clean, responsive grid, all powered by data fetched from an external API.
 
 ---
 
-## Technical Requirements
+## What I Did
 
-- Use **React functional components**
-- Use the **Fetch API**
-- Use `useEffect()` to fetch data once on mount
-- Use `useState()` to manage podcast data
-- Use `.map()` to dynamically render PodcastPreviewCard components
-- Format dates using `date-fns` or a custom formatter
+Here’s what’s going on in this app:
 
----
-
-## Responsiveness Requirements
-
-- Must look good on:
-  - Desktop (≥1200px)
-  - Tablet (~768px)
-  - Mobile (~375px)
-- Use **CSS Grid** or **Flexbox**
-- Media queries or frameworks like **Tailwind CSS** are allowed
+- Fetch podcast data from [Podcast API](https://podcast-api.netlify.app/) right when the page loads.
+- Show a **loading spinner** while data is on its way.
+- Handle errors or empty responses gracefully with a user-friendly message.
+- Display all podcasts in a **grid** that looks good on desktop, tablet, and mobile.
+- Each podcast preview shows:
+  - The **cover image**
+  - The **title**
+  - **Number of seasons**
+  - **Genres** (pulled from my local `data.js`)
+  - Last updated info (formatted like “3 days ago”)
+- Everything’s styled consistently, using **CSS Grid, Flexbox, or Tailwind**. I wanted it to look polished at any screen size.
 
 ---
 
-## Deliverables
+## Tech Stuff
 
-- **Functional React Application**
+Here’s what I used to make it work:
 
-  - A working React app that fetches podcast data from an external API on initial load.
-  - The app renders a grid of podcast previews using reusable components.
+- **React functional components**
+- `useEffect()` to fetch data on mount
+- `useState()` for storing podcasts and selected items
+- `.map()` to render podcast cards dynamically
+- Date formatting handled via **date-fns** or a small custom function
+- Fetch API to get the data
 
-- **Loading, Error, and Empty States**
+---
 
-  - A clear loading indicator is displayed while fetching data.
-  - Meaningful error or empty state messaging is shown if the fetch fails or returns no results.
+## Components
 
-- **Podcast Preview Card Component**
+### PodcastTile
 
-  - A reusable component that displays:
-    - Podcast image
-    - Podcast title
-    - Number of seasons
-    - Genre tags
-    - Last updated date in a human-readable format (e.g., "3 days ago")
+Reusable component that shows each podcast’s preview card:
 
-- **Responsive Layout**
+- Image
+- Title
+- Genres
+- Number of seasons
+- Last updated info
 
-  - Grid layout that adapts to mobile, tablet, and desktop screen sizes using responsive design principles.
+### PodModal
 
-- **Codebase**
-  - Clean, modular code with clearly separated components.
-  - All major functions and modules documented with **JSDoc** comments.
-  - Consistent formatting across JavaScript, JSX, HTML, and CSS files.
+Opens when a podcast is clicked. Shows:
+
+- Bigger image
+- Full description
+- Seasons and number of episodes per season
+- Genres
+- Last updated date
+
+---
+
+## Layout & Responsiveness
+
+- Works on **mobile (≈375px)**, **tablet (~768px)**, and **desktop (≥1200px)**
+- Grid layout adapts dynamically
+- Smooth hover effects and spacing
+- I focused on making it readable and visually clean, no matter the device
+
+---
+
+## What I Learned
+
+While building this, I got better at:
+
+- Fetching data from an API and handling loading/error states
+- Dynamically rendering components based on API data
+- Building reusable React components
+- Working with responsive CSS (Grid and Flexbox)
+
+---
+
+## Running the Project
+
+If you want to check it out locally:
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+```
