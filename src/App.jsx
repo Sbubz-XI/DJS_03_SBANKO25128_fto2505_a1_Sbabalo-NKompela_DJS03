@@ -6,7 +6,6 @@ function App() {
   const [podcasts, setPodcasts] = useState([]);
   const [selectedPodcast, setSelectedPodcast] = useState(null);
 
-  // Fetch podcast previews
   useEffect(() => {
     async function fetchPreviews() {
       try {
@@ -20,7 +19,6 @@ function App() {
     fetchPreviews();
   }, []);
 
-  // Open modal with full details
   const openPodcast = async (preview) => {
     try {
       const response = await fetch(

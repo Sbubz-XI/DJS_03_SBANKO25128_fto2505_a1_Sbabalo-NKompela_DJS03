@@ -15,7 +15,6 @@ function timeAgo(dateStr) {
   return `${years} year${years !== 1 ? "s" : ""} ago`;
 }
 
-// Helper function to map genre ids to titles
 function getGenreTitles(ids) {
   if (!ids?.length) return ["Unknown"];
   return ids.map((id) => genres.find((g) => g.id === id)?.title || "Unknown");

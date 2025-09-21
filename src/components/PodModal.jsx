@@ -1,4 +1,6 @@
 import React from "react";
+import { genres } from "../data.js";
+import "./PodModal.css";
 
 function PodModal({ podcast, onClose }) {
   if (!podcast) return null;
@@ -11,11 +13,14 @@ function PodModal({ podcast, onClose }) {
       })
     : null;
 
+  const genreTitles = podcast.genres?.length
+    ? podcast.genres.map(
+        (id) => genres.find((g) => g.id === id)?.title || "Unknown"
+      )
+    : ["Unknown"];
+
   return (
-    <dialog
-      open
-      className="p-6 bg-white rounded-lg shadow-lg max-w-2xl mx-auto relative"
-    >
+    <dialog id="podcast-modal" open className="pod-modal p-6 bg-white">
       <button
         onClick={onClose}
         className="absolute right-4 top-4 text-gray-600 hover:bg-gray-200 rounded-full px-2 text-xl"
@@ -31,24 +36,21 @@ function PodModal({ podcast, onClose }) {
           alt={podcast.title}
           className="w-full md:w-1/3 rounded-lg object-cover"
         />
+
         <div className="flex-1">
           <h3 className="text-lg font-semibold mb-2">Description</h3>
           <p className="text-gray-700 mb-4">{podcast.description}</p>
 
           <h3 className="text-lg font-semibold mb-2">Genres</h3>
           <div className="flex flex-wrap gap-2 text-sm text-gray-600 mb-4">
-            {podcast.genres?.length ? (
-              podcast.genres.map((genre, index) => (
-                <span
-                  key={index}
-                  className="text-md font-bold text-gray-600 px-2 py-1 rounded border bg-gray-100"
-                >
-                  {genre}
-                </span>
-              ))
-            ) : (
-              <span>No genres listed</span>
-            )}
+            {genreTitles.map((title, index) => (
+              <span
+                key={index}
+                className="text-md font-bold text-gray-600 px-2 py-1 rounded border bg-gray-100"
+              >
+                {title}
+              </span>
+            ))}
           </div>
 
           {formattedDate && (
@@ -60,15 +62,22 @@ function PodModal({ podcast, onClose }) {
           {podcast.seasons?.length > 0 && (
             <>
               <h3 className="text-lg font-semibold mb-2">Seasons</h3>
-              {podcast.seasons.map((season, index) => (
+              {podcast.seasons.map((season) => (
                 <div
-                  key={index}
+                  key={season.id}
                   className="relative bg-white rounded-lg shadow-md p-4 mb-3"
                 >
-                  <h3 className="font-semibold">{season.title}</h3>
-                  <p className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-700 font-medium">
-                    {season.episodes} episodes
-                  </p>
+                  <h4 className="font-semibold">{season.title}</h4>
+                  <p className="text-sm text-gray-700">{season.description}</p>
+                  {season.episodes?.length > 0 && (
+                    <ul className="mt-2 list-disc list-inside text-sm text-gray-600">
+                      {season.episodes.map((episode) => (
+                        <li key={episode.id}>
+                          {episode.title} - {episode.description}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               ))}
             </>
