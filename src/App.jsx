@@ -5,6 +5,7 @@ import PodModal from "./components/PodModal.jsx";
 function App() {
   const [podcasts, setPodcasts] = useState([]);
   const [selectedPodcast, setSelectedPodcast] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPreviews() {
@@ -14,6 +15,8 @@ function App() {
         setPodcasts(data);
       } catch (error) {
         console.error("Error fetching podcast previews:", error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchPreviews();
@@ -52,13 +55,24 @@ function App() {
           aria-label="Podcast Grid"
           className="bg-grey-500 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
         >
-          {podcasts.map((podcast) => (
-            <PodcastTile
-              key={podcast.id}
-              podcast={podcast}
-              onClick={openPodcast}
-            />
-          ))}
+          {loading ? (
+            // ---------- LOADING INDICATOR INSERTED HERE ----------
+            <div className="col-span-full flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
+              <span className="ml-4 text-lg font-semibold">
+                Loading podcasts...
+              </span>
+            </div>
+          ) : (
+            // ---------- ORIGINAL PODCAST TILE MAPPING ----------
+            podcasts.map((podcast) => (
+              <PodcastTile
+                key={podcast.id}
+                podcast={podcast}
+                onClick={openPodcast}
+              />
+            ))
+          )}
         </section>
 
         <PodModal podcast={selectedPodcast} onClose={closePodcast} />
