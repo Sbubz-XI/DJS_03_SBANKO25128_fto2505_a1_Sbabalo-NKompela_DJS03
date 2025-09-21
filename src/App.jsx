@@ -1,46 +1,71 @@
-import "./App.css";
+import React, { useEffect, useState } from "react";
+import PodcastTile from "./components/PodcastTile.jsx";
+import PodModal from "./components/PodModal.jsx";
 
 function App() {
-  return (
-    <>
-      <header class="bg-white border-gray-400 shadow h-12 flex items-center pl-4">
-        <div class="bg-[url('/icons/podcast-.png')] bg-cover bg-center h-6 w-6 mr-1"></div>
-        <div class="text-lg font-semibold">Podcast App</div>
+  const [podcasts, setPodcasts] = useState([]);
+  const [selectedPodcast, setSelectedPodcast] = useState(null);
 
-        <div class="absolute right-3 flex space-x-3 items-center">
-          <div class="bg-[url('/icons/loupe.png')] bg-cover bg-center h-4 w-4"></div>
-          <div class="bg-[url('/icons/profile.png')] bg-cover bg-center h-6 w-6"></div>
+  // Fetch podcast previews
+  useEffect(() => {
+    async function fetchPreviews() {
+      try {
+        const response = await fetch("https://podcast-api.netlify.app/");
+        const data = await response.json();
+        setPodcasts(data);
+      } catch (error) {
+        console.error("Error fetching podcast previews:", error);
+      }
+    }
+    fetchPreviews();
+  }, []);
+
+  // Open modal with full details
+  const openPodcast = async (preview) => {
+    try {
+      const response = await fetch(
+        `https://podcast-api.netlify.app/id/${preview.id}`
+      );
+      const fullPodcast = await response.json();
+      setSelectedPodcast(fullPodcast);
+    } catch (error) {
+      console.error("Error fetching podcast details:", error);
+    }
+  };
+
+  const closePodcast = () => {
+    setSelectedPodcast(null);
+  };
+
+  return (
+    <div className="p-4">
+      <header className="bg-white border-gray-400 shadow h-12 flex items-center pl-4">
+        <div className="bg-[url('/src/assets/podcast-.png')] bg-cover bg-center h-6 w-6 mr-1"></div>
+        <div className="text-lg font-semibold">Podcast App</div>
+
+        <div className="absolute right-3 flex space-x-3 items-center">
+          <div className="bg-[url('/src/assets/loupe.png')] bg-cover bg-center h-4 w-4"></div>
+          <div className="bg-[url('/src/assets/profile.png')] bg-cover bg-center h-6 w-6"></div>
         </div>
       </header>
-      <main class="pl-5 pr-3 pt-6 pb-1">
-        <section class="space-x-1">
-          <span class="text-sm font-semibold">Filter by:</span>
-          <select
-            id="GenreSelect"
-            class="text-sm font-semibold pl-2 pr-2 pt-1 pb-1 border border-gray-300 rounded-lg"
-          >
-            <option value="">All Genres</option>
-            <option value="">Genre 1</option>
-            <option value="">Genre 2</option>
-            <option value="">Genre 3</option>
-          </select>
-          <select
-            id="countrySelect"
-            class="text-sm font-semibold pl-2 pr-2 pt-1 pb-1 border border-gray-300 rounded-lg"
-          >
-            <option value="">Recently Updated</option>
-            <option value="">Most Popular</option>
-            <option value="">Newest</option>
-          </select>
+
+      <main>
+        <section
+          aria-label="Podcast Grid"
+          className="bg-grey-500 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+        >
+          {podcasts.map((podcast) => (
+            <PodcastTile
+              key={podcast.id}
+              podcast={podcast}
+              onClick={openPodcast}
+            />
+          ))}
         </section>
-        <section aria-label="Podcast Grid">
-          <div
-            id="podcast-container"
-            class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4"
-          ></div>
-        </section>
+
+        <PodModal podcast={selectedPodcast} onClose={closePodcast} />
       </main>
-    </>
+    </div>
   );
 }
 
